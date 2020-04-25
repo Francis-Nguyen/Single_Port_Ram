@@ -1,0 +1,40 @@
+`ifndef BLOCK_RAM_READ_SEQUENCE
+`define BLOCK_RAM_READ_SEQUENCE
+	class block_ram_read_sequence extends uvm_sequence#(block_ram_sequence_item);
+		int	ram_data[$];
+		int	ram_addr[$];
+		`uvm_object_utils_begin(block_ram_read_sequence)
+			`uvm_field_queue_int(ram_data,		UVM_ALL_ON)
+			`uvm_field_queue_int(ram_addr,		UVM_ALL_ON)
+		`uvm_object_utils_end
+
+	  function new(string name = "block_ram_read_sequence");
+			super.new(name);
+		endfunction: new
+
+		virtual task body();
+			int length;
+			`uvm_info(this.get_name(), "BODY ENTER", UVM_LOW)
+			if(this.ram_data.size() != this.ram_addr.size())
+				begin
+					`uvm_error("READ", "DATA size is different to ADDR size")
+				end
+			else
+				begin
+					length = this.ram_data.size();
+					`uvm_create(req)
+						req.trans_type		=		READ;
+						req.trans_length	=		length;
+						req.trans_addr		=		this.ram_addr[i];
+						req.trans_datai		=		0;
+					`uvm_send(req)
+					// get respond data
+					this.get_response(rsp);
+					this.ram_data.push_back(rsp.trans_datao);
+					`uvm_info(this.get_name(), $psprintf("READ: addr=0x%x, data=0x%x", this.ram_addr[i], this.ram_data[i]), UVM_LOW)
+				end
+			`uvm_info(this.get_name(), "BODY EXIT", UVM_LOW)
+		endtask: body
+
+	endclass: block_ram_read_sequence
+`endif

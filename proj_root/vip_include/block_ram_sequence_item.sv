@@ -3,7 +3,7 @@
 	import uvm_pkg::*;
 	`include "uvm_macros.svh"
   class block_ram_sequence_item extends uvm_sequence_item;
-		transaction_type								trans_type;
+		rand transaction_type						trans_type;
   	rand 	bit [`DATA_WIDTH-1:0] 		trans_length;	
   	rand 	bit [`ADDR_WIDTH-1:0] 		trans_addr;
   	rand 	bit [`DATA_WIDTH-1:0] 		trans_datai;	

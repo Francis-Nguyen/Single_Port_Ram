@@ -14,11 +14,9 @@ package block_ram_pkg;
 	`include "block_ram_driver.sv"
 	`include "block_ram_sequencer.sv"
 	`include "block_ram_agent.sv"
-	`include "block_ram_base_sequence.sv"
 	`include "block_ram_random_sequence.sv"
-	`include "block_ram_write_continuous_sequence.sv"
-	`include "block_ram_read_continuous_sequence.sv"
-	`include "block_ram_virtual_sequence.sv"
+	`include "block_ram_write_sequence.sv"
+	`include "block_ram_read_sequence.sv"
 
 endpackage
 `endif

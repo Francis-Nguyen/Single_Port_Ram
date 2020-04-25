@@ -1,6 +1,11 @@
 `include "dut.v"
 module dut_wrapper(interface dut_if);
-	blk_ram blk_ram(
+	blk_ram #(
+		.DWIDTH			(16),
+		.AWIDTH			(8),
+		.MEM_DEPTH	(256)
+	)
+	blk_ram(
 		.clk		(dut_if.clk),
 		.rst		(dut_if.reset),
 		.en			(dut_if.bram_en),
