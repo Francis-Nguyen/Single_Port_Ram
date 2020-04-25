@@ -10,7 +10,7 @@
 		block_ram_configuration m_config;
 		`uvm_component_utils(block_ram_driver)
 
-		function new (string name = "block_ram_driver", uvm_component parent);
+		function new (string name = "block_ram_driver", uvm_component parent = null);
 		  super.new(name, parent);
 		endfunction: new
 
@@ -39,10 +39,10 @@
 			         	 begin
 			            this.seq_item_port.get_next_item(this.req_item);
 		              this.req_item.print();
-			          	 this.send_to_if(this.req_item, this.rsp_item);
+			          	this.send_to_if(this.req_item, this.rsp_item);
 			            this.seq_item_port.item_done();	
-			          	 this.rsp_item.set_id_info(this.req_item);
-			          	 this.seq_item_port.put_response(this.rsp_item);
+			          	this.rsp_item.set_id_info(this.req_item);
+			          	this.seq_item_port.put_response(this.rsp_item);
 			          end
 			        join_none
 			   	 end
@@ -71,27 +71,34 @@
 			begin
 			  if(in_item.trans_type.name() == "READ")
 			  	begin
-			  	  @(posedge this.blk_ram_if.CLK);
-			  	  this.blk_ram_if.READ 		= 1'b1;
-			  	  this.blk_ram_if.WRITE		= 1'b0;
-			  	  this.blk_ram_if.ADDR		= in_item.trans_addr;
-			  	  this.blk_ram_if.DATAI		=	in_item.trans_datai;
-			  	  @(posedge this.blk_ram_if.CLK);
-			  	  in_item.trans_datao			=	this.blk_ram_if.DATAO;
-			  	  this.blk_ram_if.READ 		= 1'b0;
+						fork
+							begin
+			  	  		@(posedge this.blk_ram_if.clk);
+			  	  		this.blk_ram_if.bram_en 			= 1'b1;
+			  	  		this.blk_ram_if.bram_wen			= 1'b0;
+			  	  		this.blk_ram_if.bram_addr			= in_item.trans_addr;
+			  	  		this.blk_ram_if.bram_datai		=	in_item.trans_datai;
+			  	  		@(posedge this.blk_ram_if.clk);
+			  	  		in_item.trans_datao						=	this.blk_ram_if.bram_datao;
+			  	  		this.blk_ram_if.bram_en 			= 1'b0;
+			  	  		this.blk_ram_if.bram_addr 		= 1'b0;
+			  	  		this.blk_ram_if.bram_datai 		= 1'b0;
+							end
+						join_none
 			  	end
 			  else
 			  if(in_item.trans_type.name() == "WRITE")
 			  	begin
-					  @(posedge this.blk_ram_if.CLK);
-			  	  this.blk_ram_if.READ 		= 1'b0;
-			  	  this.blk_ram_if.WRITE		= 1'b1;
-			  	  this.blk_ram_if.ADDR		= in_item.trans_addr;
-			  	  this.blk_ram_if.DATAI		=	in_item.trans_datai;
-			  	  in_item.trans_datao			=	0;
-						@(posedge this.blk_ram_if.CLK);
-			  	  this.blk_ram_if.WRITE		= 1'b0;
-
+					  @(posedge this.blk_ram_if.clk);
+			  	  this.blk_ram_if.bram_en 		= 1'b1;
+			  	  this.blk_ram_if.bram_wen		= 1'b1;
+			  	  this.blk_ram_if.bram_addr		= in_item.trans_addr;
+			  	  this.blk_ram_if.bram_datai	=	in_item.trans_datai;
+			  	  in_item.trans_datao					=	0;
+						@(posedge this.blk_ram_if.clk);
+			  	  this.blk_ram_if.bram_en			= 1'b0;
+			  	  this.blk_ram_if.bram_wen		= 1'b0;
+			  	  this.blk_ram_if.bram_datai	=	'h0;
 			  	end
 
 			  	out_item.trans_type			= in_item.trans_type;
@@ -106,14 +113,14 @@
 			begin
 					fork
 					  begin
-				      wait(this.slv_ram_if.READ == 1'b1);
-				    	  this.slv_ram_if.DATAO = this.mem[this.slv_ram_if.ADDR];
-				    	  @(posedge this.slv_ram_if.CLK);
+				      wait(this.slv_ram_if.bram_en == 1'b1 && this.slv_ram_if.bram_wen == 1'b0);
+				    	  this.slv_ram_if.bram_datao = this.mem[this.slv_ram_if.bram_addr];
+				    	  @(posedge this.slv_ram_if.clk);
 						end
 						begin
-						  wait(this.slv_ram_if.WRITE == 1'b1);
-							this.mem[this.slv_ram_if.ADDR] = this.slv_ram_if.DATAI; 
-							@(posedge this.slv_ram_if.CLK);
+						  wait(this.slv_ram_if.bram_en == 1'b1 && this.slv_ram_if.bram_wen == 1'b1);
+							this.mem[this.slv_ram_if.bram_addr] = this.slv_ram_if.bram_datai; 
+							@(posedge this.slv_ram_if.clk);
 						end
 					join_any
 					disable fork;

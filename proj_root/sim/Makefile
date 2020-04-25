@@ -6,7 +6,8 @@ VIP_INC	= +incdir+$(PROJ_ROOT)/vip_include \
 					$(PROJ_ROOT)/vip_include/block_ram.sv
 
 ENV_INC	= +incdir+$(PROJ_ROOT)/env \
-					+incdir+$(PROJ_ROOT)/env/interface
+					+incdir+$(PROJ_ROOT)/env/interface \
+					+incdir+$(PROJ_ROOT)/env/lib
 
 RTL_INC	= +incdir+$(PROJ_ROOT)/rtl
 

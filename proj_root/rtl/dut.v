@@ -1,16 +1,47 @@
-module dut(
- interface blk_ram_ms_if, interface blk_ram_slv_if
+module blk_ram(
+	clk,
+	rst,
+	en,
+	wen,
+	addr,
+	datai,
+	datao
 );
 
-assign blk_ram_ms_if.DATAO  	= blk_ram_slv_if.DATAO;
-//assign blk_ram_ms_if.DATAO  	= 16'h01;
-assign blk_ram_slv_if.READ  	= blk_ram_ms_if.READ;
-assign blk_ram_slv_if.WRITE 	= blk_ram_ms_if.WRITE;
-assign blk_ram_slv_if.ADDR		=	blk_ram_ms_if.ADDR;
-assign blk_ram_slv_if.DATAI		= blk_ram_ms_if.DATAI;	
+parameter	DWIDTH	= 8;
+parameter	AWIDTH	= 8;
+parameter	MEMDEPTH = 256;
 
-initial begin
-	$display("WAITING READ/WRITE COMMAND........");
-end
+input									clk;
+input									rst;
+input									en;
+input									wen;
+input									addr;
+input		[DWIDTH-1:0]	datai;
+output	[DWIDTH-1:0]	datao;
+
+reg			[DWIDTH-1:0]	r_data;
+reg			[DWIDTH-1:0]	mem[MEM_DEPTH];
+
+
+always@(posedge clk or posedge rst)
+	begin
+		if(rst==1'b1)
+			r_data <= 'h0;
+		else
+		begin
+			if(en == 1'b1)
+				begin
+					if(wen == 1'b1)
+						mem[addr] <= datai;
+					else
+						r_data		<= mem[addr];
+				end
+			else
+						r_data		<= 'h0;
+		end
+	end
+
+assign datao = r_data;
 
 endmodule

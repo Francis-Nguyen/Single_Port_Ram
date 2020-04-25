@@ -2,7 +2,7 @@
 `define BLOCK_RAM_BASE_SEQUENCE
 	class block_ram_base_sequence extends uvm_sequence #(block_ram_sequence_item);
 
-					transaction_type										trans_type;
+					transaction_type					trans_type;
   	rand 	bit [`ADDR_WIDTH-1:0] 		trans_addr;
   	rand 	bit [`DATA_WIDTH-1:0] 		trans_datai;	
   				bit [`DATA_WIDTH-1:0] 		trans_datao;	
