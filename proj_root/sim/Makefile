@@ -10,6 +10,10 @@ ENV_INC	= +incdir+$(PROJ_ROOT)/env \
 
 RTL_INC	= +incdir+$(PROJ_ROOT)/rtl
 
+SVA_INC = -f $(PROJ_ROOT)/sva/sva_list.f
+
+COV_INC = -f $(PROJ_ROOT)/cov/cov_list.f
+
 comp:
 	mkdir run_data;
 	vlib work
@@ -18,6 +22,8 @@ comp:
 				$(VIP_INC) \
 				$(ENV_INC) \
 				$(RTL_INC) \
+				$(SVA_INC) \
+				$(COV_INC) \
 				$(TB_TOP)/tb_top.sv
 sim:	comp
 	vsim -c tb_top -l run_data/sim.log -do "run -all; quit"
