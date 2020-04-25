@@ -15,23 +15,26 @@
 		virtual task body();
 			int length;
 			`uvm_info(this.get_name(), "BODY ENTER", UVM_LOW)
-			if(this.ram_data.size() != this.ram_addr.size())
+			length = this.ram_data.size();
+			`uvm_create(req)
+				req.trans_type		=		READ;
+				req.trans_length	=		length;
+				//delete queue content
+				req.trans_addr = {};
+				req.trans_datai = {};
+				foreach(this.ram_addr[i])
+					begin
+						req.trans_addr.push_back(this.ram_addr[i]);
+						req.trans_datai.push_back('h0);
+					end
+			`uvm_send(req)
+			// get respond data
+			this.get_response(rsp);
+			//delete queue content
+			this.ram_data = {};
+			foreach(rsp.trans_datao[i])
 				begin
-					`uvm_error("READ", "DATA size is different to ADDR size")
-				end
-			else
-				begin
-					length = this.ram_data.size();
-					`uvm_create(req)
-						req.trans_type		=		READ;
-						req.trans_length	=		length;
-						req.trans_addr		=		this.ram_addr[i];
-						req.trans_datai		=		0;
-					`uvm_send(req)
-					// get respond data
-					this.get_response(rsp);
-					this.ram_data.push_back(rsp.trans_datao);
-					`uvm_info(this.get_name(), $psprintf("READ: addr=0x%x, data=0x%x", this.ram_addr[i], this.ram_data[i]), UVM_LOW)
+					this.ram_data.push_back(rsp.trans_datao[i]);
 				end
 			`uvm_info(this.get_name(), "BODY EXIT", UVM_LOW)
 		endtask: body

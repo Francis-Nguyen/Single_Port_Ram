@@ -15,7 +15,12 @@ class bram_write_00 extends virt_sequence;
 				data.push_back($random());
 				addr.push_back(i);
 			end
-		`uvm_do_on_with(write_sequence, sequencer, {write_sequence.ram_data = data; write_sequence.ram_addr=addr;})	
+		foreach(data[i])
+			begin
+				this.write_sequence.ram_data.push_back(data[i]);
+				this.write_sequence.ram_addr.push_back(addr[i]);
+			end
+		`uvm_do_on(this.write_sequence, this.p_sequencer)	
 		`uvm_info(this.get_name(), "BODY EXIT", UVM_LOW)
 	endtask: body
 

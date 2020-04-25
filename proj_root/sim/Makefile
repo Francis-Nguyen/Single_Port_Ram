@@ -15,6 +15,8 @@ SVA_INC = -f $(PROJ_ROOT)/sva/sva_list.f
 
 COV_INC = -f $(PROJ_ROOT)/cov/cov_list.f
 
+TEST_INC = +incdir+$(PROJ_ROOT)/env/tests
+
 comp:
 	mkdir run_data;
 	vlib work
@@ -25,6 +27,7 @@ comp:
 				$(RTL_INC) \
 				$(SVA_INC) \
 				$(COV_INC) \
+				$(TEST_INC) \
 				$(TB_TOP)/tb_top.sv
 sim:	comp
 	vsim -c tb_top -l run_data/sim.log -do "run -all; quit"

@@ -77,8 +77,8 @@
 								begin
 			  					this.blk_ram_if.bram_en 			= 1'b1;
 			  					this.blk_ram_if.bram_wen			= 1'b0;
-			  					this.blk_ram_if.bram_addr			= in_item.trans_addr;
-			  					this.blk_ram_if.bram_datai		=	in_item.trans_datai;
+			  					this.blk_ram_if.bram_addr			= in_item.trans_addr[i];
+			  					this.blk_ram_if.bram_datai		=	in_item.trans_datai[i];
 			  					@(posedge this.blk_ram_if.clk);
 								end
 							end
@@ -87,7 +87,7 @@
 								for(int j=0; j<in_item.trans_length; j=j+1)
 								begin
 			  					@(posedge this.blk_ram_if.clk);
-			  					in_item.trans_datao						=	this.blk_ram_if.bram_datao;
+			  					in_item.trans_datao.push_back(this.blk_ram_if.bram_datao);
 								end
 							end
 						join
@@ -104,9 +104,8 @@
 							begin
 			  	  		this.blk_ram_if.bram_en 		= 1'b1;
 			  	  		this.blk_ram_if.bram_wen		= 1'b1;
-			  	  		this.blk_ram_if.bram_addr		= in_item.trans_addr;
-			  	  		this.blk_ram_if.bram_datai	=	in_item.trans_datai;
-			  	  		in_item.trans_datao					=	'h0;
+			  	  		this.blk_ram_if.bram_addr		= in_item.trans_addr[i];
+			  	  		this.blk_ram_if.bram_datai	=	in_item.trans_datai[i];
 								@(posedge this.blk_ram_if.clk);
 							end
 						// After complete write request, clear input signals
@@ -117,10 +116,7 @@
 			  	end
 					
 					// transaction respond is out_item
-			  	out_item.trans_type			= in_item.trans_type;
-			  	out_item.trans_addr			= in_item.trans_addr;
-			  	out_item.trans_datai		=	in_item.trans_datai;
-			  	out_item.trans_datao		= in_item.trans_datao;
+					out_item.copy(in_item);
 			end
 
 		endtask: send_to_if

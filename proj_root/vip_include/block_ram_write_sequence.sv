@@ -25,11 +25,17 @@ class block_ram_write_sequence extends uvm_sequence#(block_ram_sequence_item);
 				`uvm_create(req)
 					req.trans_type 		= 	WRITE;
 					req.trans_length	=		length;
-					req.trans_addr		=		this.ram_addr[i];
-					req.trans_datai		=		this.ram_data[i];
-					req.trans_datao		=		0;
+					// delete content of queues
+					req.trans_addr  = {};
+					req.trans_datai = {};
+					req.trans_datao = {};
+					foreach(this.ram_addr[i])
+						begin
+							req.trans_addr.push_back(this.ram_addr[i]);
+							req.trans_datai.push_back(this.ram_data[i]);
+							req.trans_datao.push_back('h0);
+						end
 				`uvm_send(req)
-				`uvm_info(this.get_name(), $psprintf("WRITE: addr=0x%x, data=0x%x", this.ram_addr[i], this.ram_data[i]), UVM_LOW)
 			end
 		`uvm_info(this.get_name(), "BODY EXIT", UVM_LOW)
 	endtask: body

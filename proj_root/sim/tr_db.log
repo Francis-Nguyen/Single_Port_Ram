@@ -135,3 +135,4 @@
   CREATE_STREAM @0 {NAME:rand_sequence T:Transactions SCOPE:master_sequencer STREAM:801}
   CREATE_STREAM @0 {NAME:rand_sequence T:Transactions SCOPE:master_sequencer STREAM:597}
   CREATE_STREAM @0 {NAME:rand_sequence T:Transactions SCOPE:master_sequencer STREAM:597}
+  CREATE_STREAM @0 {NAME:bram_write_00 T:Transactions SCOPE:master_sequencer STREAM:615}
