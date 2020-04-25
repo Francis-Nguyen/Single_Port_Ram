@@ -1,8 +1,14 @@
-# FIFO_sync
-This project to create Synchronizer FIFO
-This type of FIFO is used to solve Clock Domain Crossing
-Reference document: CummingsSNUG2008Boston_CDC
-URL: http://www.sunburst-design.com/papers/CummingsSNUG2008Boston_CDC.pdf
+# Single_Port_Ram
+This project to create Single Port Ram
+- clock input
+- positive reset
+- address
+- write data in
+- read data out
+- write enable (wen = 1 -> write, wen = 0 -> read)
+- enable (chip enable)
+Reference document:
+URL: 
 Steps run:
 ./setup_proj
 cd sim
