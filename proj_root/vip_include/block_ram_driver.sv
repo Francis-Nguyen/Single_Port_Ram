@@ -73,34 +73,50 @@
 			  	begin
 						fork
 							begin
-			  	  		@(posedge this.blk_ram_if.clk);
-			  	  		this.blk_ram_if.bram_en 			= 1'b1;
-			  	  		this.blk_ram_if.bram_wen			= 1'b0;
-			  	  		this.blk_ram_if.bram_addr			= in_item.trans_addr;
-			  	  		this.blk_ram_if.bram_datai		=	in_item.trans_datai;
-			  	  		@(posedge this.blk_ram_if.clk);
-			  	  		in_item.trans_datao						=	this.blk_ram_if.bram_datao;
-			  	  		this.blk_ram_if.bram_en 			= 1'b0;
-			  	  		this.blk_ram_if.bram_addr 		= 1'b0;
-			  	  		this.blk_ram_if.bram_datai 		= 1'b0;
+								for(int i=0; i<in_item.trans_length; i=i+1)
+								begin
+			  					this.blk_ram_if.bram_en 			= 1'b1;
+			  					this.blk_ram_if.bram_wen			= 1'b0;
+			  					this.blk_ram_if.bram_addr			= in_item.trans_addr;
+			  					this.blk_ram_if.bram_datai		=	in_item.trans_datai;
+			  					@(posedge this.blk_ram_if.clk);
+								end
 							end
-						join_none
+							begin
+			  				@(posedge this.blk_ram_if.clk);
+								for(int j=0; j<in_item.trans_length; j=j+1)
+								begin
+			  					@(posedge this.blk_ram_if.clk);
+			  					in_item.trans_datao						=	this.blk_ram_if.bram_datao;
+								end
+							end
+						join
+						// After complete read request, clear input signals
+			  		this.blk_ram_if.bram_en 			= 1'b0;
+			  		this.blk_ram_if.bram_wen 			= 1'b0;
+			  		this.blk_ram_if.bram_addr 		= 'h0;
+			  		this.blk_ram_if.bram_datai 		= 'h0;
 			  	end
 			  else
 			  if(in_item.trans_type.name() == "WRITE")
 			  	begin
-					  @(posedge this.blk_ram_if.clk);
-			  	  this.blk_ram_if.bram_en 		= 1'b1;
-			  	  this.blk_ram_if.bram_wen		= 1'b1;
-			  	  this.blk_ram_if.bram_addr		= in_item.trans_addr;
-			  	  this.blk_ram_if.bram_datai	=	in_item.trans_datai;
-			  	  in_item.trans_datao					=	0;
-						@(posedge this.blk_ram_if.clk);
+						for(int i=0; i<in_item.trans_length; i=i+1)
+							begin
+			  	  		this.blk_ram_if.bram_en 		= 1'b1;
+			  	  		this.blk_ram_if.bram_wen		= 1'b1;
+			  	  		this.blk_ram_if.bram_addr		= in_item.trans_addr;
+			  	  		this.blk_ram_if.bram_datai	=	in_item.trans_datai;
+			  	  		in_item.trans_datao					=	'h0;
+								@(posedge this.blk_ram_if.clk);
+							end
+						// After complete write request, clear input signals
 			  	  this.blk_ram_if.bram_en			= 1'b0;
 			  	  this.blk_ram_if.bram_wen		= 1'b0;
+			  		this.blk_ram_if.bram_addr 	= 'h0;
 			  	  this.blk_ram_if.bram_datai	=	'h0;
 			  	end
-
+					
+					// transaction respond is out_item
 			  	out_item.trans_type			= in_item.trans_type;
 			  	out_item.trans_addr			= in_item.trans_addr;
 			  	out_item.trans_datai		=	in_item.trans_datai;

@@ -21,12 +21,14 @@ module tb_top();
 		reset = 0;
 	end
 
-	block_ram_if 				ms_ram_if(.CLK(clk), .RESET(reset));
-	block_ram_if 				slv_ram_if(.CLK(clk), .RESET(reset));
-	dut_wrapper dut_wrapper(.blk_ram_ms_if(ms_ram_if.ms_if), .blk_ram_slv_if(slv_ram_if.slv_if));
+	block_ram_if	ms_ram_if(.clk(clk), .reset(reset));
+
+	dut_wrapper dut_wrapper(
+		.dut_if(ms_ram_if)
+	);
+
 	initial begin
 		uvm_config_db #(virtual block_ram_if)::set(null, "*", "master_ram_if", ms_ram_if);
-		uvm_config_db #(virtual block_ram_if)::set(null, "*", "slaver_ram_if", slv_ram_if);
 	end
 
 	initial begin

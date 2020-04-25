@@ -10,7 +10,7 @@ module blk_ram(
 
 parameter	DWIDTH	= 8;
 parameter	AWIDTH	= 8;
-parameter	MEMDEPTH = 256;
+parameter	MEM_DEPTH = 256;
 
 input									clk;
 input									rst;
