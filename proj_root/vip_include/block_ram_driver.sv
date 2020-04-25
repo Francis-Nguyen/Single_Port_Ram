@@ -106,6 +106,7 @@
 			  	  		this.blk_ram_if.bram_wen		= 1'b1;
 			  	  		this.blk_ram_if.bram_addr		= in_item.trans_addr[i];
 			  	  		this.blk_ram_if.bram_datai	=	in_item.trans_datai[i];
+								`uvm_info("WRITE", $psprintf("addr = 0x%x data = 0x%x", in_item.trans_addr[i], in_item.trans_datai[i]), UVM_LOW)
 								@(posedge this.blk_ram_if.clk);
 							end
 						// After complete write request, clear input signals

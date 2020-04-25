@@ -1,5 +1,6 @@
 `ifndef VIRT_SEQUENCE
 `define VIRT_SEQUENCE
+
 class virt_sequence extends uvm_sequence#(block_ram_sequence_item);
 	block_ram_random_sequence	rand_sequence;	
 	block_ram_read_sequence		read_sequence;
