@@ -72,6 +72,7 @@
 			  	begin
 						fork
 							begin
+								@(posedge this.ms_ram_if.clk);
 								for(int i=0; i<in_item.trans_length; i=i+1)
 								begin
 			  					this.ms_ram_if.bram_en 			= 1'b1;
@@ -87,7 +88,6 @@
 								begin
 			  					@(posedge this.ms_ram_if.clk);
 			  					in_item.trans_datao.push_back(this.ms_ram_if.bram_datao);
-									$display("datao = 0x%x", in_item.trans_datao[j]);
 								end
 							end
 						join
@@ -100,6 +100,7 @@
 			  else
 			  if(in_item.trans_type.name() == "WRITE")
 			  	begin
+						@(posedge this.ms_ram_if.clk);
 						for(int i=0; i<in_item.trans_length; i=i+1)
 							begin
 			  	  		this.ms_ram_if.bram_en 		= 1'b1;

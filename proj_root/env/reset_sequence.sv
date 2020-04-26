@@ -27,9 +27,9 @@ class reset_sequence extends uvm_sequence#(block_ram_sequence_item);
 					end
 					else
 					begin
-						this.ms_ram_if.reset = 1'b0;
-						repeat(100)	@(posedge this.ms_ram_if.clk);
 						this.ms_ram_if.reset = 1'b1;
+						repeat(100)	@(posedge this.ms_ram_if.clk);
+						this.ms_ram_if.reset = 1'b0;
 					end
 				end
 		`uvm_info(this.get_name(), "BODY EXIT", UVM_LOW)

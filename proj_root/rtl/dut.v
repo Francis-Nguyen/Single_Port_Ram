@@ -16,7 +16,7 @@ input									clk;
 input									rst;
 input									en;
 input									wen;
-input									addr;
+input		[AWIDTH-1:0]	addr;
 input		[DWIDTH-1:0]	datai;
 output	[DWIDTH-1:0]	datao;
 

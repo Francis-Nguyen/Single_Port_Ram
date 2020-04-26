@@ -30,8 +30,10 @@ comp:
 				$(TEST_INC) \
 				$(TB_TOP)/tb_top.sv
 sim:	comp
-	vsim -c tb_top -l run_data/sim.log -do "run -all; quit"
+	vsim -c tb_top -l run_data/sim.log -do \
+	"add wave -r /*; view wave; view structure; view signals; run -all; quit"
 all:	sim
 clean:
 	rm -rf work
 	rm -rf run_data
+	rm -rf vsim.wlf
