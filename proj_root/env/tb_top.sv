@@ -21,14 +21,6 @@ module tb_top();
 	);
 
 	initial begin
-		string test_name[$];
-		uvm_cmdline_processor inst;
-		inst.get_inst();
-		void'(uvm_cmdline_proc.get_plusargs(test_name));
-		foreach(test_name[i])
-		$display("test_name = %s", test_name[i]);
-	end
-	initial begin
 		uvm_config_db #(virtual block_ram_if)::set(null, "*", "master_ram_if", ms_ram_if);
 	end
 

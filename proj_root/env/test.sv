@@ -23,11 +23,12 @@ class test extends uvm_test;
 
 	task run_phase(uvm_phase phase);
 		`uvm_info("TEST", "run phase entering.................", UVM_LOW);
-		//if(test_name == "bram_write_00")
+		`ifdef bram_write_00
 			begin
 				write_00	= bram_write_00::type_id::create("bram_write_00", this);
 				write_00.start(this.block_ram_env.master_sequencer);
 			end
+			`endif
 		`uvm_info("TEST", "run phase exiting.................", UVM_LOW);
 
 	endtask: run_phase 

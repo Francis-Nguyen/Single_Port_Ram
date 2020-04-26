@@ -17,6 +17,8 @@ COV_INC = -f $(PROJ_ROOT)/cov/cov_list.f
 
 TEST_INC = +incdir+$(PROJ_ROOT)/env/tests
 
+TEST_NAME = default
+
 comp:
 	mkdir run_data;
 	vlib work
@@ -28,6 +30,7 @@ comp:
 				$(SVA_INC) \
 				$(COV_INC) \
 				$(TEST_INC) \
+				+define+$(TEST_NAME) \
 				$(TB_TOP)/tb_top.sv
 sim:	comp
 	vsim -c tb_top -l run_data/sim.log -do \

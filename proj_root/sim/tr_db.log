@@ -187,3 +187,23 @@
   CREATE_STREAM @0 {NAME:reset_sequence T:Transactions SCOPE:master_sequencer STREAM:648}
   CREATE_STREAM @3980 {NAME:write_sequence T:Transactions SCOPE:master_sequencer STREAM:688}
   CREATE_STREAM @4420 {NAME:read_sequence T:Transactions SCOPE:master_sequencer STREAM:700}
+  CREATE_STREAM @0 {NAME:bram_write_00 T:Transactions SCOPE:master_sequencer STREAM:628}
+  CREATE_STREAM @0 {NAME:reset_sequence T:Transactions SCOPE:master_sequencer STREAM:648}
+  CREATE_STREAM @3980 {NAME:write_sequence T:Transactions SCOPE:master_sequencer STREAM:688}
+  CREATE_STREAM @4420 {NAME:read_sequence T:Transactions SCOPE:master_sequencer STREAM:700}
+  CREATE_STREAM @0 {NAME:bram_write_00 T:Transactions SCOPE:master_sequencer STREAM:628}
+  CREATE_STREAM @0 {NAME:reset_sequence T:Transactions SCOPE:master_sequencer STREAM:648}
+  CREATE_STREAM @3980 {NAME:write_sequence T:Transactions SCOPE:master_sequencer STREAM:688}
+  CREATE_STREAM @4420 {NAME:read_sequence T:Transactions SCOPE:master_sequencer STREAM:700}
+  CREATE_STREAM @0 {NAME:bram_write_00 T:Transactions SCOPE:master_sequencer STREAM:628}
+  CREATE_STREAM @0 {NAME:reset_sequence T:Transactions SCOPE:master_sequencer STREAM:648}
+  CREATE_STREAM @3980 {NAME:write_sequence T:Transactions SCOPE:master_sequencer STREAM:688}
+  CREATE_STREAM @4420 {NAME:read_sequence T:Transactions SCOPE:master_sequencer STREAM:700}
+  CREATE_STREAM @0 {NAME:bram_write_00 T:Transactions SCOPE:master_sequencer STREAM:628}
+  CREATE_STREAM @0 {NAME:reset_sequence T:Transactions SCOPE:master_sequencer STREAM:648}
+  CREATE_STREAM @3980 {NAME:write_sequence T:Transactions SCOPE:master_sequencer STREAM:688}
+  CREATE_STREAM @4420 {NAME:read_sequence T:Transactions SCOPE:master_sequencer STREAM:700}
+  CREATE_STREAM @0 {NAME:bram_write_00 T:Transactions SCOPE:master_sequencer STREAM:628}
+  CREATE_STREAM @0 {NAME:reset_sequence T:Transactions SCOPE:master_sequencer STREAM:648}
+  CREATE_STREAM @3980 {NAME:write_sequence T:Transactions SCOPE:master_sequencer STREAM:688}
+  CREATE_STREAM @4420 {NAME:read_sequence T:Transactions SCOPE:master_sequencer STREAM:700}
