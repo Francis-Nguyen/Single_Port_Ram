@@ -1,16 +1,15 @@
 # Single_Port_Ram
 This project to create Single Port Ram
-- clock input
-- positive reset
-- address
-- write data in
-- read data out
-- write enable (wen = 1 -> write, wen = 0 -> read)
-- enable (chip enable)
+- Build as a VIP (Verification IP)
+- Build an example UVM evironment to use this VIP
+- Run on Questasim
+
+# source
 Reference document:
-URL: 
-Steps run:
-./setup_proj
-cd sim
-make clean
-make all
+URL:
+
+# Simulation run
+1. ./setup_proj
+2. cd sim
+3. make clean
+4. make all
