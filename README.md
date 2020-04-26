@@ -12,4 +12,4 @@ URL:
 1. ./setup_proj
 2. cd sim
 3. make clean
-4. make all
+4. make all TEST_NAME=bram_write_00
