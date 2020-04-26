@@ -5,6 +5,12 @@ class bram_write_00 extends virt_sequence;
 		super.new(name);
 	endfunction: new
 
+	virtual task pre_body();
+			`uvm_info("**RESET**", "**BEGIN**", UVM_LOW)
+			this.rst_sequence.start(this.p_sequencer);
+			`uvm_info("**RESET**", "**END**", UVM_LOW)
+	endtask: pre_body
+
 	virtual task body();
 		int data[$];
 		int	addr[$];
@@ -19,8 +25,11 @@ class bram_write_00 extends virt_sequence;
 					begin
 						this.write_sequence.ram_data.push_back(data[i]);
 						this.write_sequence.ram_addr.push_back(addr[i]);
+						this.read_sequence.ram_addr.push_back(addr[i]);
+						this.read_sequence.ram_data.push_back(data[i]);
 					end
 				this.write_sequence.start(this.p_sequencer);
+				this.read_sequence.start(this.p_sequencer);
 		`uvm_info(this.get_name(), "BODY EXIT", UVM_LOW)
 		end
 	endtask: body

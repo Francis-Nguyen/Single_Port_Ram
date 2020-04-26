@@ -1,9 +1,9 @@
-interface dut_if (input clk, input reset);
-	bit									clk;
-	bit									reset;
-	bit									bram_en;
-	bit									bram_wen;
-	bit [`AWIDTH-1:0] 	bram_addr;
-	bit [`DWIDTH-1:0] 	bram_datai;	
-	bit [`DWIDTH-1:0] 	bram_datao;	
+interface dut_if;
+	logic									clk;
+	logic									reset;
+	logic									bram_en;
+	logic									bram_wen;
+	logic [`AWIDTH-1:0] 	bram_addr;
+	logic [`DWIDTH-1:0] 	bram_datai;	
+	logic [`DWIDTH-1:0] 	bram_datao;	
 endinterface

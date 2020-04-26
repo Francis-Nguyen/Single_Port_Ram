@@ -4,7 +4,7 @@
   class block_ram_driver extends uvm_driver #(block_ram_sequence_item);
 	  				block_ram_sequence_item 		req_item;
 	  				block_ram_sequence_item 		rsp_item;
-		virtual block_ram_if 								blk_ram_if;
+		virtual block_ram_if 								ms_ram_if;
 		virtual block_ram_if 								slv_ram_if;
 		bit [`DATA_WIDTH-1:0] mem [2**`ADDR_WIDTH:0];
 		block_ram_configuration m_config;
@@ -30,7 +30,7 @@
 			  begin
 			    if(this.m_config.is_master == 1'b1)
 			   	 begin
-			        if(!uvm_config_db#(virtual block_ram_if)::get(this, "", "master_ram_if", this.blk_ram_if))
+			        if(!uvm_config_db#(virtual block_ram_if)::get(this, "", "master_ram_if", this.ms_ram_if))
 			        begin
 			     		 `uvm_error(this.get_name(), " Need configuration for master_ram_if")
 			     	 end
@@ -56,10 +56,9 @@
 			      	 end
 			    	   
 			    	   fork
-			    		   while(1)
-			    				 begin
+			    		  	while(1) begin
 			    				   receive_from_if();
-			    				 end
+			    				end
 			    		 join_none
 			    	 end
 					end
@@ -75,45 +74,45 @@
 							begin
 								for(int i=0; i<in_item.trans_length; i=i+1)
 								begin
-			  					this.blk_ram_if.bram_en 			= 1'b1;
-			  					this.blk_ram_if.bram_wen			= 1'b0;
-			  					this.blk_ram_if.bram_addr			= in_item.trans_addr[i];
-			  					this.blk_ram_if.bram_datai		=	in_item.trans_datai[i];
-			  					@(posedge this.blk_ram_if.clk);
+			  					this.ms_ram_if.bram_en 			= 1'b1;
+			  					this.ms_ram_if.bram_wen			= 1'b0;
+			  					this.ms_ram_if.bram_addr		= in_item.trans_addr[i];
+			  					this.ms_ram_if.bram_datai		=	in_item.trans_datai[i];
+			  					@(posedge this.ms_ram_if.clk);
 								end
 							end
 							begin
-			  				@(posedge this.blk_ram_if.clk);
+			  				@(posedge this.ms_ram_if.clk);
 								for(int j=0; j<in_item.trans_length; j=j+1)
 								begin
-			  					@(posedge this.blk_ram_if.clk);
-			  					in_item.trans_datao.push_back(this.blk_ram_if.bram_datao);
+			  					@(posedge this.ms_ram_if.clk);
+			  					in_item.trans_datao.push_back(this.ms_ram_if.bram_datao);
+									$display("datao = 0x%x", in_item.trans_datao[j]);
 								end
 							end
 						join
 						// After complete read request, clear input signals
-			  		this.blk_ram_if.bram_en 			= 1'b0;
-			  		this.blk_ram_if.bram_wen 			= 1'b0;
-			  		this.blk_ram_if.bram_addr 		= 'h0;
-			  		this.blk_ram_if.bram_datai 		= 'h0;
+			  		this.ms_ram_if.bram_en 			= 1'b0;
+			  		this.ms_ram_if.bram_wen 		= 1'b0;
+			  		this.ms_ram_if.bram_addr 		= 'h0;
+			  		this.ms_ram_if.bram_datai 	= 'h0;
 			  	end
 			  else
 			  if(in_item.trans_type.name() == "WRITE")
 			  	begin
 						for(int i=0; i<in_item.trans_length; i=i+1)
 							begin
-			  	  		this.blk_ram_if.bram_en 		= 1'b1;
-			  	  		this.blk_ram_if.bram_wen		= 1'b1;
-			  	  		this.blk_ram_if.bram_addr		= in_item.trans_addr[i];
-			  	  		this.blk_ram_if.bram_datai	=	in_item.trans_datai[i];
-								`uvm_info("WRITE", $psprintf("addr = 0x%x data = 0x%x", in_item.trans_addr[i], in_item.trans_datai[i]), UVM_LOW)
-								@(posedge this.blk_ram_if.clk);
+			  	  		this.ms_ram_if.bram_en 		= 1'b1;
+			  	  		this.ms_ram_if.bram_wen		= 1'b1;
+			  	  		this.ms_ram_if.bram_addr	= in_item.trans_addr[i];
+			  	  		this.ms_ram_if.bram_datai	=	in_item.trans_datai[i];
+								@(posedge this.ms_ram_if.clk);
 							end
 						// After complete write request, clear input signals
-			  	  this.blk_ram_if.bram_en			= 1'b0;
-			  	  this.blk_ram_if.bram_wen		= 1'b0;
-			  		this.blk_ram_if.bram_addr 	= 'h0;
-			  	  this.blk_ram_if.bram_datai	=	'h0;
+			  	  this.ms_ram_if.bram_en			= 1'b0;
+			  	  this.ms_ram_if.bram_wen			= 1'b0;
+			  		this.ms_ram_if.bram_addr 		= 'h0;
+			  	  this.ms_ram_if.bram_datai		=	'h0;
 			  	end
 					
 					// transaction respond is out_item

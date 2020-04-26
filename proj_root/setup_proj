@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 set cygwin_dir 	= `pwd`
 #echo $cygwin_dir
 set win_trimHD	= `echo $cygwin_dir | awk '{print substr($0, 11, 1)}'`

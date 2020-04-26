@@ -30,6 +30,7 @@
 			`uvm_send(req)
 			// get respond data
 			this.get_response(rsp);
+			rsp.print();
 			//delete queue content
 			this.ram_data = {};
 			foreach(rsp.trans_datao[i])

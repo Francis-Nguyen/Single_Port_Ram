@@ -35,6 +35,7 @@ class env extends uvm_env;
 		this.master_driver 						= block_ram_driver::type_id::create("master_driver", this);
 		this.master_config						= block_ram_configuration::type_id::create("master_config", this);
 		this.master_config.is_master 	= 1'b1;
+		uvm_config_db#(block_ram_configuration)::set(uvm_root::get(), "*", "m_config", this.master_config);
 
 		//this.slaver_agent 						= block_ram_agent::type_id::create("slaver_agent", this);
 		//this.slaver_sequencer					= sequencer::type_id::create("slaver_sequencer", this);

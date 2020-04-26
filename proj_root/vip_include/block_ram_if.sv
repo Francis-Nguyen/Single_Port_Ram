@@ -1,11 +1,13 @@
 `ifndef BLOCK_RAM_IF
 `define BLOCK_RAM_IF
-interface block_ram_if (input clk, input reset);
-	bit											bram_en;
-	bit											bram_wen;
-	bit [`ADDR_WIDTH-1:0] 	bram_addr;
-	bit [`DATA_WIDTH-1:0] 	bram_datai;	
-	bit [`DATA_WIDTH-1:0] 	bram_datao;	
+interface block_ram_if;
+	logic											clk;
+	logic											reset;
+	logic											bram_en;
+	logic											bram_wen;
+	logic [`ADDR_WIDTH-1:0] 	bram_addr;
+	logic [`DATA_WIDTH-1:0] 	bram_datai;	
+	logic [`DATA_WIDTH-1:0] 	bram_datao;	
 
 	modport ms_if(
 	  output 											bram_en,

@@ -7,26 +7,27 @@ module tb_top();
 	parameter P_250MHZ = 20;
 
 	bit clk 		= 0;
-	bit reset 	= 0;
 
 	initial forever begin
 		#P_250MHZ clk =~ clk;
 	end
 
-	initial begin
-		reset = 0;
-		#1us;
-		reset = 1;
-		#10us;
-		reset = 0;
-	end
+	block_ram_if	ms_ram_if();
 
-	block_ram_if	ms_ram_if(.clk(clk), .reset(reset));
+	assign ms_ram_if.clk = clk;
 
 	dut_wrapper dut_wrapper(
 		.dut_if(ms_ram_if)
 	);
 
+	initial begin
+		string test_name[$];
+		uvm_cmdline_processor inst;
+		inst.get_inst();
+		void'(uvm_cmdline_proc.get_plusargs(test_name));
+		foreach(test_name[i])
+		$display("test_name = %s", test_name[i]);
+	end
 	initial begin
 		uvm_config_db #(virtual block_ram_if)::set(null, "*", "master_ram_if", ms_ram_if);
 	end

@@ -22,11 +22,8 @@ class test extends uvm_test;
 	endfunction: build_phase		
 
 	task run_phase(uvm_phase phase);
-		string test_name;
 		`uvm_info("TEST", "run phase entering.................", UVM_LOW);
-		void'(uvm_cmdline_proc.get_arg_value("TEST_NAME=", test_name));
-		$display("test_name = %s", test_name);
-		if(test_name == "bram_write_00")
+		//if(test_name == "bram_write_00")
 			begin
 				write_00	= bram_write_00::type_id::create("bram_write_00", this);
 				write_00.start(this.block_ram_env.master_sequencer);
