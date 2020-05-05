@@ -70,9 +70,9 @@
 			begin
 			  if(in_item.trans_type.name() == "READ")
 			  	begin
+						@(posedge this.ms_ram_if.clk);
 						fork
 							begin
-								@(posedge this.ms_ram_if.clk);
 								for(int i=0; i<in_item.trans_length; i=i+1)
 								begin
 			  					this.ms_ram_if.bram_en 			= 1'b1;

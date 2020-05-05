@@ -13,3 +13,9 @@ URL:
 2. cd sim
 3. make clean
 4. make all TEST_NAME=bram_write_00
+
+# View Waveform
+1. Open Questasim
+2. In Questasim terminal do command: 
+		cd $PROJ_ROOT/sim
+3. add -view vsim.wlf

@@ -33,7 +33,8 @@ comp:
 				+define+$(TEST_NAME) \
 				$(TB_TOP)/tb_top.sv
 sim:	comp
-	vsim -c tb_top -l run_data/sim.log -do \
+	vopt +acc tb_top -o tb_top_opt -debugdb
+	vsim -c tb_top_opt -l run_data/$(TEST_NAME).log -do \
 	"add wave -r /*; view wave; view structure; view signals; run -all; quit"
 all:	sim
 clean:
